@@ -1,0 +1,28 @@
+name: Hopsport Poster (Mon/Thu)
+on:
+  schedule:
+    - cron: '0 8 * * 1,4' # 8:00 AM UTC on Mon and Thu
+  workflow_dispatch:
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with: { python-version: '3.10' }
+      - run: pip install openai requests
+      - run: python weekly_poster.py
+        env:
+          SHOP_DOMAIN: ${{ secrets.SHOP_DOMAIN }}
+          SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BLOG_ID_RUNNING: ${{ secrets.BLOG_ID_RUNNING }}
+          AUTHOR_NAME: ${{ secrets.AUTHOR_NAME }}
+      - run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add content_calendar.json
+          git commit -m "Published article" || echo "No changes"
+          git push
