@@ -1,0 +1,25 @@
+name: Generate Hopsport Calendar
+on:
+  workflow_dispatch:
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with: { python-version: '3.10' }
+      - run: pip install openai requests
+      - run: python content_planner.py
+        env:
+          SHOP_DOMAIN: ${{ secrets.SHOP_DOMAIN }}
+          SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BLOG_ID_RUNNING: ${{ secrets.BLOG_ID_RUNNING }}
+      - run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add content_calendar.json
+          git commit -m "Update calendar" || echo "No changes"
+          git push
