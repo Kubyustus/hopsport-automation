@@ -1,7 +1,6 @@
 import os
 import json
 import time
-import random
 import requests
 from openai import OpenAI
 
@@ -30,11 +29,14 @@ def get_existing_titles(blog_id):
     
     try:
         resp = requests.post(url, json={"query": query, "variables": {"blogId": blog_id}}, headers=headers)
+        if resp.status_code != 200:
+            print(f"   [Error] Shopify Title Check Failed (Status {resp.status_code}): {resp.text}")
+            return set()
         data = resp.json()
         edges = data.get("data", {}).get("blog", {}).get("articles", {}).get("edges", [])
         return {edge["node"]["title"].strip().lower() for edge in edges}
     except Exception as e:
-        print(f"   [Warning] Could not check existing titles: {e}")
+        print(f"   [Error] Exception checking titles: {e}")
         return set()
 
 def poll_for_image_url(file_id):
@@ -51,20 +53,30 @@ def poll_for_image_url(file_id):
     url = f"https://{SHOP_DOMAIN}/admin/api/2024-01/graphql.json"
     headers = {"X-Shopify-Access-Token": ACCESS_TOKEN, "Content-Type": "application/json"}
     
-    for _ in range(10): 
-        time.sleep(3) 
+    for attempt in range(12): 
+        time.sleep(5) 
         resp = requests.post(url, json={"query": query, "variables": {"id": file_id}}, headers=headers)
         data = resp.json()
         node = data.get("data", {}).get("node", {})
+        
+        # Debug: Print status if waiting
+        status = node.get("status", "UNKNOWN") if node else "UNKNOWN"
+        if status != "READY":
+             print(f"   ... Image status: {status} (Attempt {attempt+1})")
+
         if node and node.get("image") and node["image"].get("url"):
             return node["image"]["url"]
+            
+    print("   [Error] Image timed out processing on Shopify.")
     return None
 
 def upload_image_to_shopify(image_url):
+    print("   -> Uploading image to Shopify...")
     query = """
     mutation fileCreate($files: [FileCreateInput!]!) {
       fileCreate(files: $files) {
         files { ... on MediaImage { id } }
+        userErrors { field message }
       }
     }
     """
@@ -74,11 +86,26 @@ def upload_image_to_shopify(image_url):
     
     try:
         resp = requests.post(endpoint, json={"query": query, "variables": variables}, headers=headers)
-        files = resp.json().get("data", {}).get("fileCreate", {}).get("files", [])
-        if files:
+        data = resp.json()
+        
+        # DEBUG: Print exact error if it fails
+        if "errors" in data:
+            print(f"   [SHOPIFY API ERROR]: {data['errors']}")
+            return None
+            
+        file_create = data.get("data", {}).get("fileCreate", {})
+        if file_create.get("userErrors"):
+            print(f"   [SHOPIFY USER ERROR]: {file_create['userErrors']}")
+            return None
+
+        files = file_create.get("files", [])
+        if files and files[0]:
             return poll_for_image_url(files[0]["id"])
+        else:
+            print(f"   [Error] No file ID returned. Response: {data}")
+            
     except Exception as e:
-        print(f"   [Upload Error]: {e}")
+        print(f"   [Exception] Upload failed: {e}")
     return None
 
 # --- AI Logic ---
@@ -93,14 +120,19 @@ def generate_topics(count, existing_titles):
         "2. Keys: 'title' (Hebrew string), 'image_prompt' (English visual description for DALL-E), 'keywords' (list of Hebrew keywords).\n"
         "3. Do NOT use these titles: " + ", ".join(list(existing_titles)[:20])
     )
-    resp = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.7
-    )
-    return json.loads(resp.choices[0].message.content.strip().replace("```json", "").replace("```", ""))
+    try:
+        resp = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7
+        )
+        return json.loads(resp.choices[0].message.content.strip().replace("```json", "").replace("```", ""))
+    except Exception as e:
+        print(f"   [AI Error] Topic Generation Failed: {e}")
+        return []
 
 def generate_image(prompt):
+    print("   -> Generating AI image...")
     try:
         resp = client.images.generate(
             model="dall-e-3",
@@ -109,18 +141,24 @@ def generate_image(prompt):
             size="1024x1024"
         )
         return resp.data[0].url
-    except Exception:
+    except Exception as e:
+        print(f"   [AI Error] Image Generation Failed: {e}")
         return None
 
 # --- Main ---
 
 def main():
+    # Ensure file exists
     if not os.path.exists("content_calendar.json"):
         with open("content_calendar.json", "w") as f:
             json.dump({"running": []}, f)
 
     with open("content_calendar.json", "r") as f:
         calendar = json.load(f)
+
+    # Init key if missing
+    if "running" not in calendar:
+        calendar["running"] = []
 
     # Configuration for the single blog
     blog_config = {
@@ -131,11 +169,11 @@ def main():
     print("--- Planning for Hopsport Running Blog ---")
     existing = get_existing_titles(blog_config['id'])
     
-    try:
-        # Generate 10 topics per run
-        new_topics = generate_topics(10, existing)
-    except Exception as e:
-        print(f"   [Error] Topic generation failed: {e}")
+    # Generate 10 topics
+    new_topics = generate_topics(10, existing)
+    
+    if not new_topics:
+        print("No topics generated. Exiting.")
         return
 
     for topic in new_topics:
@@ -143,11 +181,15 @@ def main():
         
         # 1. AI Image
         openai_url = generate_image(topic['image_prompt'])
-        if not openai_url: continue
+        if not openai_url:
+            print("   [Skip] Image generation failed.")
+            continue
 
         # 2. Upload to Shopify
         shopify_url = upload_image_to_shopify(openai_url)
-        if not shopify_url: continue
+        if not shopify_url:
+            print("   [Skip] Shopify upload failed.")
+            continue
 
         entry = {
             "title": topic['title'],
@@ -156,7 +198,9 @@ def main():
             "status": "pending"
         }
         calendar['running'].append(entry)
+        print("   [Success] Saved to calendar.")
         
+        # Save after every successful item
         with open("content_calendar.json", "w") as f:
             json.dump(calendar, f, indent=2)
         
