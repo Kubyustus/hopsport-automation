@@ -19,12 +19,12 @@ PRODUCTS = [
     {
         "title": "הופספורט - שרוול זרוע ריצה לסמארטפון (מארז 2 יחידות)",
         "url": "https://hopsport.co/products/%D7%94%D7%95%D7%A4%D7%A1%D7%A4%D7%95%D7%A8%D7%98-%D7%A9%D7%A8%D7%95%D7%95%D7%9C-%D7%96%D7%A8%D7%95%D7%A2-%D7%A8%D7%99%D7%A6%D7%94-%D7%9C%D7%A1%D7%9E%D7%90%D7%A8%D7%98%D7%A4%D7%95%D7%9F-%D7%94%D7%93%D7%92%D7%9D-%D7%94%D7%9E%D7%A9%D7%95%D7%A4%D7%A8-%D7%9E%D7%90%D7%A8%D7%96-2-%D7%99%D7%97%D7%99%D7%93%D7%95%D7%AA",
-        "image": "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder.jpg" # <--- PASTE REAL IMAGE URL HERE
+        "image": "https://hopsport.co/cdn/shop/products/main2units2_1080x1080.jpg?v=1669120278" # <--- PASTE REAL IMAGE URL HERE
     },
     {
         "title": "הופספורט - שרוול זרוע ריצה לסמארטפון (מארז 3 יחידות)",
         "url": "https://hopsport.co/products/%D7%94%D7%95%D7%A4%D7%A1%D7%A4%D7%95%D7%A8%D7%98-%D7%A9%D7%A8%D7%95%D7%95%D7%9C-%D7%96%D7%A8%D7%95%D7%A2-%D7%A8%D7%99%D7%A6%D7%94-%D7%9C%D7%A1%D7%9E%D7%90%D7%A8%D7%98%D7%A4%D7%95%D7%9F-%D7%94%D7%93%D7%92%D7%9D-%D7%94%D7%9E%D7%A9%D7%95%D7%A4%D7%A8-%D7%9E%D7%90%D7%A8%D7%96-%D7%A9%D7%9C-3-%D7%99%D7%97%D7%99%D7%93%D7%95%D7%AA",
-        "image": "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder.jpg" # <--- PASTE REAL IMAGE URL HERE
+        "image": "https://hopsport.co/cdn/shop/products/main-pack-hopsport_720x720.jpg?v=1635772467" # <--- PASTE REAL IMAGE URL HERE
     }
 ]
 
