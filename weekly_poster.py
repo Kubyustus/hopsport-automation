@@ -13,12 +13,13 @@ AUTHOR_NAME = os.environ.get("AUTHOR_NAME", "צוות הופספורט")
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-# --- PRODUCTS (Hardcoded) ---
+# --- PRODUCTS (Hardcoded with corrected image) ---
 PRODUCTS = [
     {
         "title": "הופספורט - שרוול זרוע ריצה לסמארטפון (מארז 2 יחידות)",
         "url": "https://hopsport.co/products/%D7%94%D7%95%D7%A4%D7%A1%D7%A4%D7%95%D7%A8%D7%98-%D7%A9%D7%A8%D7%95%D7%95%D7%9C-%D7%96%D7%A8%D7%95%D7%A2-%D7%A8%D7%99%D7%A6%D7%94-%D7%9C%D7%A1%D7%9E%D7%90%D7%A8%D7%98%D7%A4%D7%95%D7%9F-%D7%94%D7%93%D7%92%D7%9D-%D7%94%D7%9E%D7%A9%D7%95%D7%A4%D7%A8-%D7%9E%D7%90%D7%A8%D7%96-2-%D7%99%D7%97%D7%99%D7%93%D7%95%D7%AA",
-        "image": "https://hopsport.co/cdn/shop/products/main2units_2_1080x1080.jpg" 
+        # Corrected Image URL below:
+        "image": "https://hopsport.co/cdn/shop/products/HopSport-Armband-Banner-Beach2-product_45e36503-36ed-48ef-82e3-f78d55725ee6_1080x1080.jpg?v=1669120278"
     },
     {
         "title": "הופספורט - שרוול זרוע ריצה לסמארטפון (מארז 3 יחידות)",
@@ -28,7 +29,6 @@ PRODUCTS = [
 ]
 
 def get_blog_gid(numeric_id):
-    # Fixes the "Invalid Global ID" error automatically
     if "gid://" in str(numeric_id):
         return numeric_id
     return f"gid://shopify/Blog/{numeric_id}"
@@ -90,7 +90,6 @@ def publish_article(title, body, image_url, image_alt, tags):
     }
     """
     
-    # Use the helper to ensure ID is correct
     blog_gid = get_blog_gid(BLOG_ID_RUNNING)
 
     variables = {
@@ -110,7 +109,6 @@ def publish_article(title, body, image_url, image_alt, tags):
 
 def main():
     try:
-        # Open with UTF-8 encoding
         with open("content_calendar.json", "r", encoding='utf-8') as f:
             calendar = json.load(f)
     except FileNotFoundError:
@@ -128,7 +126,6 @@ def main():
     body_html = generate_article_body(article['title'], article['keywords'])
     widget = get_product_widget()
     
-    # Add RTL widget
     if "</p>" in body_html:
         body_html = body_html.replace("</p>", f"</p>{widget}", 1)
     else:
