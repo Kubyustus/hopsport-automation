@@ -129,6 +129,116 @@
       "image_alt": "קבוצה של רצי ספורט",
       "status": "published",
       "published_at": "2026-02-19"
+    },
+    {
+      "title": "המרתון הראשון שלך: טיפים חיוניים להצלחה",
+      "keywords": [
+        "מרתון",
+        "אימון",
+        "טיפים לריצה"
+      ],
+      "image_url": "https://cdn.shopify.com/s/files/1/0169/1923/2576/files/img-sfygqcVKyFUzJK3RW9f9VhgF.png?v=1773839415",
+      "image_alt": "מרתון ראשון",
+      "status": "pending"
+    },
+    {
+      "title": "אביזרי ריצה שלא תוכלו לחיות בלעדיהם",
+      "keywords": [
+        "אביזרי ריצה",
+        "ציוד ספורט",
+        "ריצה"
+      ],
+      "image_url": "https://cdn.shopify.com/s/files/1/0169/1923/2576/files/img-FYYPN8ZpukTDA44l3nZz8Cv6.png?v=1773839437",
+      "image_alt": "אביזרי ריצה חשובים",
+      "status": "pending"
+    },
+    {
+      "title": "איך להימנע מפציעות בזמן ריצה: טכניקות פשוטות",
+      "keywords": [
+        "פציעות",
+        "ריצה",
+        "טכניקות"
+      ],
+      "image_url": "https://cdn.shopify.com/s/files/1/0169/1923/2576/files/img-GV6OqGE0CGR5iw1qhCwE8OpW.png?v=1773839463",
+      "image_alt": "מניעת פציעות בריצה",
+      "status": "pending"
+    },
+    {
+      "title": "תוכנית אימונים אישית לרצים: איך לבנות אחת",
+      "keywords": [
+        "תוכנית אימונים",
+        "ריצה",
+        "אימון אישי"
+      ],
+      "image_url": "https://cdn.shopify.com/s/files/1/0169/1923/2576/files/img-D42mCyKxsfgwqBZLyBVOKlBX.png?v=1773839489",
+      "image_alt": "תוכנית אימונים אישית",
+      "status": "pending"
+    },
+    {
+      "title": "היתרונות של ריצה בשעות הערב: למה כדאי להמריא?",
+      "keywords": [
+        "ריצה",
+        "שעות ערב",
+        "בריאות"
+      ],
+      "image_url": "https://cdn.shopify.com/s/files/1/0169/1923/2576/files/img-73aokdfGauHAeBjPrt7ONCLd.png?v=1773839507",
+      "image_alt": "ריצה בערב",
+      "status": "pending"
+    },
+    {
+      "title": "איך לבחור את בגדי הריצה המושלמים: מדריך למתחילים",
+      "keywords": [
+        "בגדי ריצה",
+        "מדריך",
+        "מתחילים"
+      ],
+      "image_url": "https://cdn.shopify.com/s/files/1/0169/1923/2576/files/img-wmQC1k35N0fnJSKWyG7ij7KD.png?v=1773839531",
+      "image_alt": "ביגוד ריצה",
+      "status": "pending"
+    },
+    {
+      "title": "מה כדאי לאכול לפני ריצה: מתכונים בריאים",
+      "keywords": [
+        "תזונה",
+        "מתכונים",
+        "ריצה"
+      ],
+      "image_url": "https://cdn.shopify.com/s/files/1/0169/1923/2576/files/img-3UVKsgFyW7VqvMdoOUKpm9Ih.png?v=1773839552",
+      "image_alt": "תזונה לרצים",
+      "status": "pending"
+    },
+    {
+      "title": "ריצה בטבע: יתרונות וחוויות בלתי נשכחות",
+      "keywords": [
+        "ריצה",
+        "טבע",
+        "יתרונות"
+      ],
+      "image_url": "https://cdn.shopify.com/s/files/1/0169/1923/2576/files/img-Nz9lyzml2xCElSOeWw4NM3mR.png?v=1773839571",
+      "image_alt": "ריצה בטבע",
+      "status": "pending"
+    },
+    {
+      "title": "איך להשתמש בטכנולוגיה לשיפור ביצועי הריצה שלך",
+      "keywords": [
+        "טכנולוגיה",
+        "ביצועים",
+        "ריצה"
+      ],
+      "image_url": "https://cdn.shopify.com/s/files/1/0169/1923/2576/files/img-WdKWzZnn5B27R7dns2YuUUPN.png?v=1773839591",
+      "image_alt": "שימוש בטכנולוגיה בריצה",
+      "status": "pending"
+    },
+    {
+      "title": "ריצה ומדיטציה: השפעתה על בריאות הנפש",
+      "keywords": [
+        "בריאות נפשית",
+        "ריצה",
+        "מדיטציה"
+      ],
+      "image_url": "https://cdn.shopify.com/s/files/1/0169/1923/2576/files/img-Col76s6r1pSnkitKyEswVOzq.png?v=1773839612",
+      "image_alt": "ריצה ומדיטציה",
+      "status": "pending"
     }
   ]
 }
