@@ -247,7 +247,8 @@
       ],
       "image_url": "https://cdn.shopify.com/s/files/1/0169/1923/2576/files/img-Col76s6r1pSnkitKyEswVOzq.png?v=1773839612",
       "image_alt": "ריצה ומדיטציה",
-      "status": "pending"
+      "status": "published",
+      "published_at": "2026-04-20"
     }
   ]
 }
